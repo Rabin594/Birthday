@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Kareena</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; background: pink; margin: 0; padding: 20px; }
+    #content { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+    button { padding: 10px 20px; font-size: 16px; margin: 10px; border-radius: 10px; border: none; cursor: pointer; }
+    .hidden { display: none; }
+    .popup { font-size: 30px; color: red; margin: 10px; animation: pop 0.5s; display: inline-block; }
+    @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+  </style>
+</head>
+<body>
+
+<div id="content">
+  <h1 id="mainTitle">Welcome to Your Special Birthday Surprise</h1>
+  
+  <div id="step1" class="hidden">
+    <p>Enter your name:</p>
+    <input type="text" id="nameInput">
+    <button onclick="checkName()">Submit</button>
+  </div>
+  
+  <div id="step2" class="hidden">
+    <p>Enter your birthday (format: May 5):</p>
+    <input type="text" id="birthdayInput">
+    <button onclick="checkBirthday()">Submit</button>
+  </div>
+  
+  <div id="level1" class="hidden">
+    <h2>Congratulations! You completed Level 1 🎉</h2>
+    <button onclick="startLevel2()">Go to Level 2</button>
+  </div>
+  
+  <div id="level2" class="hidden">
+    <p>Level 2: What is the most beautiful feeling in a relationship?</p>
+    <input type="text" id="loveInput">
+    <button onclick="checkLove()">Submit</button>
+  </div>
+  
+  <div id="level3" class="hidden">
+    <p>Level 3: Help the girl reach the boy 💕 (Click the button)</p>
+    <button onclick="completePuzzle()">👧 ➡️ 👦</button>
+  </div>
+  
+  <div id="popupSection" class="hidden">
+    <p>Click at least 3 cakes, roses, or hearts!</p>
+    <button onclick="clickPopup()">🍰</button>
+    <button onclick="clickPopup()">🌹</button>
+    <button onclick="clickPopup()">❤️</button>
+    <div id="popupMessage"></div>
+  </div>
+  
+  <div id="finalMessage" class="hidden">
+    <p id="slowText"></p>
+    <button id="finishBtn" class="hidden" onclick="finish()">Finish</button>
+  </div>
+</div>
+
+<script>
+let popupCount = 0;
+const birthdayMessage = `Happy Birthday to babe❤️ Its a day when you light up 23 years ago. I can’t believe how far we’ve come together since we decided to be together from 3 years back and take the leap and move abroad together. It used to be different when we were back in own country but remember when we first landed in that new country, feeling a mix of excitement. It was a wild adventure, navigating unfamiliar streets and trying to communicate in a language that felt foreign to us. I know you are missing your family, your siblings, but it’s a part of life babe and I am here being your family. But through all the ups and downs, I loved exploring new places with you, from own Country to Foreign Land, from cafes to vibrant markets, and discovering hidden gems that made our journey so special. We’ve shared countless laughs, late-night talks, and even a few moments of frustration when things didn’t go as planned. But every challenge only brought us closer together. I’m so grateful to have you by my side. On your special day, I just want to celebrate you and all the joy you bring into my life. Here’s to more adventures, more memories, and more laughter together. I hope this year brings you everything you’ve been dreaming of. Enjoy your day to the fullest! Love you so much than you think. 💖 Let’s make this day special as ever.`;
+
+window.onload = function() {
+  const now = new Date();
+  const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const koreaTime = new Date(utc + (9 * 60 * 60000));
+  const month = koreaTime.getMonth(); // 0 = Jan, 4 = May
+  const date = koreaTime.getDate();
+
+  if (month === 4 && date === 5) {
+    document.getElementById('step1').classList.remove('hidden');
+  } else {
+    document.getElementById('mainTitle').innerText = 'Come back again on May 5!';
+    document.getElementById('content').innerHTML += `<p>Current Korea date: ${koreaTime.toDateString()}</p>`;
+  }
+};
+
+function checkName() {
+  const name = document.getElementById('nameInput').value.trim();
+  if (name.toLowerCase() === 'kareena') {
+    document.getElementById('step1').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+  } else {
+    alert('Wrong name! Try again.');
+  }
+}
+
+function checkBirthday() {
+  const bday = document.getElementById('birthdayInput').value.trim().toLowerCase();
+  if (bday === 'may 5') {
+    document.getElementById('step2').classList.add('hidden');
+    document.getElementById('level1').classList.remove('hidden');
+  } else {
+    alert('Wrong birthday! Try again.');
+  }
+}
+
+function startLevel2() {
+  document.getElementById('level1').classList.add('hidden');
+  document.getElementById('level2').classList.remove('hidden');
+}
+
+function checkLove() {
+  document.getElementById('level2').classList.add('hidden');
+  document.getElementById('level3').classList.remove('hidden');
+}
+
+function completePuzzle() {
+  document.getElementById('level3').classList.add('hidden');
+  document.getElementById('popupSection').classList.remove('hidden');
+}
+
+function clickPopup() {
+  popupCount++;
+  document.getElementById('popupMessage').innerHTML += '<span class="popup">🎉</span>';
+  if (popupCount >= 3) {
+    document.getElementById('popupSection').classList.add('hidden');
+    document.getElementById('finalMessage').classList.remove('hidden');
+    showMessageSlowly(birthdayMessage);
+  }
+}
+
+function showMessageSlowly(message) {
+  const textElement = document.getElementById('slowText');
+  let index = 0;
+  const interval = 120; // ~2 minutes total
+  const timer = setInterval(() => {
+    textElement.textContent += message[index];
+    index++;
+    if (index === message.length) {
+      clearInterval(timer);
+      document.getElementById('finishBtn').classList.remove('hidden');
+    }
+  }, 120);
+}
+
+function finish() {
+  document.body.innerHTML = '<h1 style="font-size:50px;">Happy Birthday! 🎉🎉🎉</h1>';
+  document.body.onclick = () => {
+    document.body.innerHTML = '<h1 style="font-size:50px;">Finished 💖</h1>';
+  };
+}
+</script>
+
+</body>
+</html>
